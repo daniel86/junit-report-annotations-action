@@ -446,9 +446,7 @@ var parseString = __webpack_require__(579).parseStringPromise;
         let annotations = [];
         
         let numTests = 0;
-        let numSkipped = 0;
         let numFailed = 0;
-        let numErrored = 0;
         let testDuration = 0;
 
         for await (const file of globber.globGenerator()) {
@@ -467,9 +465,7 @@ var parseString = __webpack_require__(579).parseStringPromise;
                 for (let testsuite of row.testsuite) {
                     testDuration += Number(testsuite['$']['time']);
                     numTests += Number(testsuite['$']['tests']);
-                    numErrored += Number(testsuite['$']['errors']);
                     numFailed += Number(testsuite['$']['failures']);
-                    //numSkipped += Number(testsuite['$']['skipped']);
                     
                     if (testsuite['$']['errors'] !== '0' || testsuite['$']['failures'] !== '0') {
                         for (let testCase of testsuite.testcase) {
@@ -501,62 +497,16 @@ var parseString = __webpack_require__(579).parseStringPromise;
                     }
                 }
             }
-            
-            const annotation_level = numFailed + numErrored > 0 ? "failure" : "notice";
-            const summary_annotation = {
-                path: "test",
-                start_line: 0,
-                end_line: 0,
-                start_column: 0,
-                end_column: 0,
-                annotation_level,
-                title: 'Test summary',
-                message: `Junit Results ran ${numTests} in ${testDuration} seconds ${numErrored} Errored, ${numFailed} Failed, ${numSkipped} Skipped`,
-            };
-            annotations = [summary_annotation, ...annotations];
-            console.log(annotations);
-            
-            if (annotation_level === "failure") {
-                //can just log these
-                for (const annotation of annotations) {
-                    console.info(
-                        `::warning title=${annotation.title},file=${annotation.path},line=${annotation.start_line}::${annotation.message}`
-                    );
-                }
-            } else {
-                const octokit = new github.GitHub(accessToken);
-                const req = {
-                    ...github.context.repo,
-                    ref: github.context.sha
-                }
-                const res = await octokit.checks.listForRef(req);
-                const jobName = process.env.GITHUB_JOB;
-
-                const checkRun = res.data.check_runs.find(
-                  (check) => check.name === jobName
+	    
+            for (const annotation of annotations) {
+                console.info(
+                    `::error file=${annotation.path},line=${annotation.start_line}::${annotation.title}\n${annotation.message}`
                 );
-                if (!checkRun) {
-                  console.log(
-                    "Junit tests result passed but can not identify test suite."
-                  );
-                  console.log(
-                    "Can happen when performing a pull request from a forked repository."
-                  );
-                  return;
-                }
-                const check_run_id = checkRun.id;
-
-                const update_req = {
-                    ...github.context.repo,
-                    check_run_id,
-                    output: {
-                        title: "Junit Results",
-                        summary: `jUnit Results`,
-                        annotations: annotations
-                    }
-                }
-                await octokit.checks.update(update_req);
             }
+	    let numSucceeded = numTests-numFailed-numErrored;
+            console.info(
+                `::debug ${numSucceeded}/${numTests} plunit tests succeeded in ${testDuration} seconds`
+            );
         }
     } catch(error) {
         core.setFailed(error.message);
