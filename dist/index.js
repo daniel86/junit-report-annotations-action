@@ -503,7 +503,7 @@ var parseString = __webpack_require__(579).parseStringPromise;
                     `::error file=${annotation.path},line=${annotation.start_line}::${annotation.title}\n${annotation.message}`
                 );
             }
-	    let numSucceeded = numTests-numFailed-numErrored;
+	    let numSucceeded = numTests-numFailed;
             console.info(
                 `::debug ${numSucceeded}/${numTests} plunit tests succeeded in ${testDuration} seconds`
             );
