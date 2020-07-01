@@ -505,7 +505,7 @@ var parseString = __webpack_require__(579).parseStringPromise;
             }
 	    let numSucceeded = numTests-numFailed;
             console.info(
-                `::debug ${numSucceeded}/${numTests} plunit tests succeeded in ${testDuration} seconds`
+                `::warning ${numSucceeded}/${numTests} plunit tests succeeded in ${testDuration} seconds`
             );
         }
     } catch(error) {
