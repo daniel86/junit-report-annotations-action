@@ -513,6 +513,9 @@ var parseString = __webpack_require__(579).parseStringPromise;
             console.info(
                 `::info ${numSucceeded}/${numTests} plunit tests succeeded in ${testDuration} seconds`
             );
+	    if(numSucceeded < numTests) {
+	        core.setFailed("One or more unit tests have failed.");
+	    }
         }
     } catch(error) {
         core.setFailed(error.message);
