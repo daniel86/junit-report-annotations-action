@@ -50,7 +50,7 @@ var parseString = require('xml2js').parseStringPromise;
                                     end_column: 0,
                                     annotation_level: 'failure',
                                     title: testCase.name,
-                                    message: testCase.failure[0]['_'],
+                                    message: testCase.name + ": " + testCase.failure[0]['_'],
                                 });
                             }
                         }
