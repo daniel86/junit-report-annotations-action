@@ -500,7 +500,7 @@ var parseString = __webpack_require__(579).parseStringPromise;
 	    
             for (const annotation of annotations) {
                 console.info(
-                    `::error file=${annotation.path},line=${annotation.start_line}::${annotation.title}\n${annotation.message}`
+                    `::error file=${annotation.path},line=${annotation.start_line}::${annotation.title}: ${annotation.message}`
                 );
             }
 	    let numSucceeded = numTests-numFailed;
