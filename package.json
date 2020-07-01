@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shyim/junit-report-annotations-action.git"
+    "url": "git+https://github.com/daniel86/junit-report-annotations-action.git"
   },
   "author": "",
   "license": "MIT",
