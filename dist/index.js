@@ -481,7 +481,7 @@ var parseString = __webpack_require__(579).parseStringPromise;
                                     start_column: 0,
                                     end_column: 0,
                                     annotation_level: 'failure',
-				    title: testsuite['$'].name + " -- " + testCase['$'].name,
+				    title: testsuite['$'].name + "::" + testCase['$'].name,
                                     message: testCase.failure[0]['_'],
                                 });
                             }
