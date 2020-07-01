@@ -70,8 +70,21 @@ var parseString = require('xml2js').parseStringPromise;
                 ref: github.context.sha
             }
             const res = await octokit.checks.listForRef(req);
-            console.log(res);
-            const check_run_id = res.data.check_runs.filter(check => check.name === 'build')[0].id
+            const jobName = process.env.GITHUB_JOB;
+            
+            const checkRun = res.data.check_runs.find(
+              (check) => check.name === jobName
+            );
+            if (!checkRun) {
+              console.log(
+                "Junit tests result passed but can not identify test suite."
+              );
+              console.log(
+                "Can happen when performing a pull request from a forked repository."
+              );
+              return;
+            }
+            const check_run_id = checkRun.id;
 
             const update_req = {
                 ...github.context.repo,
