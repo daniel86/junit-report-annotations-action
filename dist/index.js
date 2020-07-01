@@ -505,13 +505,7 @@ var parseString = __webpack_require__(579).parseStringPromise;
             }
 	    let numSucceeded = numTests-numFailed;
             console.info(
-                `::warn ${numSucceeded}/${numTests} plunit tests succeeded in ${testDuration} seconds`
-            );
-            console.info(
-                `::notice ${numSucceeded}/${numTests} plunit tests succeeded in ${testDuration} seconds`
-            );
-            console.info(
-                `::info ${numSucceeded}/${numTests} plunit tests succeeded in ${testDuration} seconds`
+                `::warning ${numSucceeded}/${numTests} plunit tests succeeded in ${testDuration} seconds`
             );
 	    if(numSucceeded < numTests) {
 	        core.setFailed("One or more unit tests have failed.");
