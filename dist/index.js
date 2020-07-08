@@ -466,6 +466,7 @@ var parseString = __webpack_require__(579).parseStringPromise;
                     testDuration += Number(testsuite['$']['time']);
                     numTests += Number(testsuite['$']['tests']);
                     numFailed += Number(testsuite['$']['failures']);
+                    numFailed += Number(testsuite['$']['errors']);
                     
                     if (testsuite['$']['errors'] !== '0' || testsuite['$']['failures'] !== '0') {
                         for (let testCase of testsuite.testcase) {
